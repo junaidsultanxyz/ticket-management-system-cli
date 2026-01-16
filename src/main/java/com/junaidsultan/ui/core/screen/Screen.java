@@ -1,41 +1,75 @@
 package com.junaidsultan.ui.core.screen;
 
-import com.junaidsultan.ui.core.panels.BoxedPanel;
-import com.junaidsultan.ui.core.panels.ConsolePanel;
-import com.junaidsultan.ui.core.panels.FooterPanel;
-
+/**
+ * Screen - Handles console output and screen rendering.
+ * Simplified implementation for cleaner CLI display.
+ */
 public class Screen {
-    private ConsolePanel header;
-    private ConsolePanel body;
-    private ConsolePanel footer;
     private final int screenWidth;
 
     public Screen(int width) {
         this.screenWidth = width;
-        // Default implementations
-        this.header = new BoxedPanel();
-        this.body = new BoxedPanel();
-        this.footer = new FooterPanel();
-
-        // Apply width settings
-        this.header.setWidth(width);
-        this.body.setWidth(width);
-        this.footer.setWidth(width);
     }
 
-    // Allow swapping panels dynamically
-    public void setBody(ConsolePanel newBody) {
-        this.body = newBody;
-        this.body.setWidth(screenWidth);
+    /**
+     * Clear the console screen.
+     */
+    public void clear() {
+        // Try to clear console (works in most terminals)
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        // Fallback: print newlines
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
     }
 
-    // The main render method
-    public void refresh(String headerText, String bodyText, String footerText) {
-        // Clear console (optional, might not work in all IDEs)
-        // System.out.print("\033[H\033[2J");
+    /**
+     * Render a screen with header, body content, and optional footer prompt.
+     */
+    public void refresh(String header, String body, String footer) {
+        clear();
+        printHeader(header);
+        System.out.println(body);
+        if (footer != null && !footer.isEmpty()) {
+            printFooter(footer);
+        }
+    }
 
-        header.print(headerText);
-        body.print(bodyText);
-        footer.print(footerText);
+    /**
+     * Print a styled header.
+     */
+    private void printHeader(String title) {
+        String line = "═".repeat(screenWidth);
+        System.out.println(line);
+        System.out.println("  " + title.toUpperCase());
+        System.out.println(line);
+        System.out.println();
+    }
+
+    /**
+     * Print a footer/prompt.
+     */
+    private void printFooter(String text) {
+        System.out.println();
+        System.out.print(">> " + text + " ");
+    }
+
+    /**
+     * Print a divider line.
+     */
+    public void printDivider() {
+        System.out.println("─".repeat(screenWidth));
+    }
+
+    /**
+     * Print a message with formatting.
+     */
+    public void printMessage(String message) {
+        System.out.println("  " + message);
+    }
+
+    public int getWidth() {
+        return screenWidth;
     }
 }

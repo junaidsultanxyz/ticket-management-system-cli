@@ -10,7 +10,6 @@ import com.junaidsultan.ui.dashboards.shared.NotificationsPage;
 import com.junaidsultan.ui.dashboards.shared.ViewTicketsPage;
 import com.junaidsultan.ui.scene_manager.Page;
 import com.junaidsultan.ui.scene_manager.Session;
-import com.junaidsultan.ui.shared.DisplayHelper;
 
 /**
  * Admin Dashboard - Main menu for administrators.
@@ -29,37 +28,36 @@ public class AdminDashboardPage implements Page {
         String userId = Session.getCurrentUser().getId();
         int unreadCount = notificationService.getUnreadCount(userId);
         
-        String header = DisplayHelper.createHeader("Admin Dashboard", unreadCount);
+        String notifBadge = unreadCount > 0 ? " (" + unreadCount + " new)" : "";
         
         String menu = String.format("""
-            ══════════════════════════════════════
+            
             Welcome, %s (Admin)
-            ══════════════════════════════════════
             
             TICKET MANAGEMENT:
-            1.  View All Tickets
-            2.  View Open Tickets
-            3.  View Resolved Tickets
-            4.  View Closed Tickets
-            5.  View Unassigned Tickets
-            6.  Create New Ticket
+            [1]  View All Tickets
+            [2]  View Open Tickets
+            [3]  View Resolved Tickets
+            [4]  View Closed Tickets
+            [5]  View Unassigned Tickets
+            [6]  Create New Ticket
             
             USER MANAGEMENT:
-            7.  Register Staff
-            8.  Register Student
-            9.  View/Manage Students
-            10. View/Manage Staff
+            [7]  Register Staff
+            [8]  Register Student
+            [9]  View/Manage Students
+            [10] View/Manage Staff
             
             OTHER:
-            11. Send Notification
-            12. My Notifications %s
-            0.  Logout
+            [11] Send Notification
+            [12] My Notifications%s
+            [0]  Logout
             """,
             Session.getCurrentUser().getName(),
-            unreadCount > 0 ? "(" + unreadCount + " new)" : ""
+            notifBadge
         );
         
-        screen.refresh(header, menu, "Select Option");
+        screen.refresh("ADMIN DASHBOARD", menu, "Select Option");
         int choice = input.readInt("");
         
         return switch (choice) {
@@ -77,12 +75,12 @@ public class AdminDashboardPage implements Page {
             case 12 -> new NotificationsPage();
             case 0 -> {
                 Session.logout();
-                System.out.println("\n✓ Logged out successfully.");
+                System.out.println("\n[OK] Logged out successfully.");
                 input.pause();
                 yield new LoginPage();
             }
             default -> {
-                System.out.println("Invalid option. Please try again.");
+                System.out.println("[!] Invalid option. Please try again.");
                 input.pause();
                 yield this;
             }

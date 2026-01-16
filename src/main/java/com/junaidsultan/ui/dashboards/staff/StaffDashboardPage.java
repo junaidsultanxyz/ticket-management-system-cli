@@ -9,7 +9,6 @@ import com.junaidsultan.ui.dashboards.shared.NotificationsPage;
 import com.junaidsultan.ui.dashboards.shared.ViewTicketsPage;
 import com.junaidsultan.ui.scene_manager.Page;
 import com.junaidsultan.ui.scene_manager.Session;
-import com.junaidsultan.ui.shared.DisplayHelper;
 
 /**
  * Staff Dashboard - Main menu for staff members.
@@ -28,29 +27,28 @@ public class StaffDashboardPage implements Page {
         String userId = Session.getCurrentUser().getId();
         int unreadCount = notificationService.getUnreadCount(userId);
         
-        String header = DisplayHelper.createHeader("Staff Dashboard", unreadCount);
+        String notifBadge = unreadCount > 0 ? " (" + unreadCount + " new)" : "";
         
         String menu = String.format("""
-            ══════════════════════════════════════
+            
             Welcome, %s!
-            ══════════════════════════════════════
             
             ASSIGNED TICKETS:
-            1. View All Assigned Tickets
-            2. View Open Tickets
-            3. View Resolved Tickets
-            4. View Closed Tickets
-            5. View Tickets On Hold
+            [1] View All Assigned Tickets
+            [2] View Open Tickets
+            [3] View Resolved Tickets
+            [4] View Closed Tickets
+            [5] View Tickets On Hold
             
             OTHER:
-            6. Notifications %s
-            0. Logout
+            [6] Notifications%s
+            [0] Logout
             """,
             Session.getCurrentUser().getName(),
-            unreadCount > 0 ? "(" + unreadCount + " new)" : ""
+            notifBadge
         );
         
-        screen.refresh(header, menu, "Select Option");
+        screen.refresh("STAFF DASHBOARD", menu, "Select Option");
         int choice = input.readInt("");
         
         return switch (choice) {
@@ -62,12 +60,12 @@ public class StaffDashboardPage implements Page {
             case 6 -> new NotificationsPage();
             case 0 -> {
                 Session.logout();
-                System.out.println("\n✓ Logged out successfully.");
+                System.out.println("\n[OK] Logged out successfully.");
                 input.pause();
                 yield new LoginPage();
             }
             default -> {
-                System.out.println("Invalid option. Please try again.");
+                System.out.println("[!] Invalid option. Please try again.");
                 input.pause();
                 yield this;
             }

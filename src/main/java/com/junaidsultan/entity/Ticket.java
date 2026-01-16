@@ -17,6 +17,8 @@ public class Ticket {
     private String assignedTo; // User ID
     private LocalDateTime createdAt;
 
+
+
     // Constructor for creating a NEW ticket
     public Ticket(String title, String description, Priority priority, String category, String createdBy) {
         this.id = UUID.randomUUID().toString();
@@ -53,6 +55,7 @@ public class Ticket {
     public String getCategory() { return category; }
     public String getCreatedBy() { return createdBy; }
     public String getAssignedTo() { return assignedTo; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
     // Setters for updating
     public void setStatus(Status status) { this.status = status; }

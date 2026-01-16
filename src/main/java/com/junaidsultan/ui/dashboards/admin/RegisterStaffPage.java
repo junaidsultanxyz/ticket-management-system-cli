@@ -21,21 +21,18 @@ public class RegisterStaffPage implements Page {
     @Override
     public Page show(Screen screen, InputReader input) {
         String info = """
-            ══════════════════════════════════════
-                    REGISTER NEW STAFF
-            ══════════════════════════════════════
             
             Enter '0' at any prompt to cancel.
             """;
         
-        screen.refresh("Register Staff", info, "");
+        screen.refresh("REGISTER NEW STAFF", info, "");
         
         // Get username
         String username = input.readString("Username:");
         if (username.equals("0")) return new AdminDashboardPage();
         
         if (!userService.isUsernameAvailable(username)) {
-            System.out.println("\n✗ Username already taken.");
+            System.out.println("\n[X] Username already taken.");
             input.pause();
             return this;
         }
@@ -45,7 +42,7 @@ public class RegisterStaffPage implements Page {
         if (email.equals("0")) return new AdminDashboardPage();
         
         if (!userService.isEmailAvailable(email)) {
-            System.out.println("\n✗ Email already registered.");
+            System.out.println("\n[X] Email already registered.");
             input.pause();
             return this;
         }
@@ -63,7 +60,7 @@ public class RegisterStaffPage implements Page {
         if (confirmPassword.equals("0")) return new AdminDashboardPage();
         
         if (!password.equals(confirmPassword)) {
-            System.out.println("\n✗ Passwords do not match.");
+            System.out.println("\n[X] Passwords do not match.");
             input.pause();
             return this;
         }
@@ -72,11 +69,11 @@ public class RegisterStaffPage implements Page {
         User newStaff = userService.registerStaff(username, email, name, password);
         
         if (newStaff != null) {
-            System.out.println("\n✓ Staff member registered successfully!");
+            System.out.println("\n[OK] Staff member registered successfully!");
             System.out.println("  Name: " + newStaff.getName());
             System.out.println("  Username: " + newStaff.getUsername());
         } else {
-            System.out.println("\n✗ Failed to register staff member.");
+            System.out.println("\n[X] Failed to register staff member.");
         }
         
         input.pause();

@@ -22,9 +22,6 @@ public class RegisterPage implements Page {
     @Override
     public Page show(Screen screen, InputReader input) {
         String info = """
-            ══════════════════════════════════════
-                    STUDENT REGISTRATION
-            ══════════════════════════════════════
             
             Note: Only students can register here.
             Staff accounts are created by Admin.
@@ -32,7 +29,7 @@ public class RegisterPage implements Page {
             Enter '0' at any prompt to cancel.
             """;
         
-        screen.refresh("Register", info, "");
+        screen.refresh("STUDENT REGISTRATION", info, "");
         
         // Get username
         String username = input.readString("Username:");
@@ -40,7 +37,7 @@ public class RegisterPage implements Page {
         
         // Check username availability
         if (!userService.isUsernameAvailable(username)) {
-            System.out.println("\n✗ Username already taken. Please try another.");
+            System.out.println("\n[X] Username already taken. Please try another.");
             input.pause();
             return this;
         }
@@ -51,7 +48,7 @@ public class RegisterPage implements Page {
         
         // Check email availability
         if (!userService.isEmailAvailable(email)) {
-            System.out.println("\n✗ Email already registered. Please use a different email.");
+            System.out.println("\n[X] Email already registered. Please use a different email.");
             input.pause();
             return this;
         }
@@ -69,14 +66,14 @@ public class RegisterPage implements Page {
         if (confirmPassword.equals("0")) return new LoginPage();
         
         if (!password.equals(confirmPassword)) {
-            System.out.println("\n✗ Passwords do not match. Please try again.");
+            System.out.println("\n[X] Passwords do not match. Please try again.");
             input.pause();
             return this;
         }
         
         // Validate password strength (basic)
         if (password.length() < 4) {
-            System.out.println("\n✗ Password must be at least 4 characters long.");
+            System.out.println("\n[X] Password must be at least 4 characters long.");
             input.pause();
             return this;
         }
@@ -85,12 +82,12 @@ public class RegisterPage implements Page {
         User newUser = userService.registerStudent(username, email, name, password);
         
         if (newUser != null) {
-            System.out.println("\n✓ Registration successful!");
-            System.out.println("  You can now login with your credentials.");
+            System.out.println("\n[OK] Registration successful!");
+            System.out.println("     You can now login with your credentials.");
             input.pause();
             return new LoginPage();
         } else {
-            System.out.println("\n✗ Registration failed. Please try again.");
+            System.out.println("\n[X] Registration failed. Please try again.");
             input.pause();
             return this;
         }

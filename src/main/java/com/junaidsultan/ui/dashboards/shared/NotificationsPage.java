@@ -1,7 +1,6 @@
 package com.junaidsultan.ui.dashboards.shared;
 
 import com.junaidsultan.entity.Notification;
-import com.junaidsultan.enums.Role;
 import com.junaidsultan.service.INotificationService;
 import com.junaidsultan.service.ServiceLocator;
 import com.junaidsultan.ui.core.input.InputReader;
@@ -36,13 +35,10 @@ public class NotificationsPage implements Page {
         String notificationList = DisplayHelper.formatNotificationList(notifications);
         
         String content = String.format("""
-            ══════════════════════════════════════
-                      NOTIFICATIONS
-            ══════════════════════════════════════
+            
             Unread: %d | Total: %d
             
             %s
-            ══════════════════════════════════════
             
             Actions:
             1. Mark all as read
@@ -51,13 +47,13 @@ public class NotificationsPage implements Page {
             0. Back
             """, unreadCount, notifications.size(), notificationList);
         
-        screen.refresh("Notifications", content, "");
+        screen.refresh("NOTIFICATIONS", content, "");
         int choice = input.readInt("");
         
         return switch (choice) {
             case 1 -> {
                 int marked = notificationService.markAllAsRead(userId);
-                System.out.println("✓ " + marked + " notification(s) marked as read.");
+                System.out.println("[OK] " + marked + " notification(s) marked as read.");
                 input.pause();
                 yield this;
             }
@@ -82,14 +78,14 @@ public class NotificationsPage implements Page {
                 String confirm = input.readString("Delete all notifications? (yes/no):");
                 if (confirm.equalsIgnoreCase("yes")) {
                     int deleted = notificationService.deleteAllNotifications(userId);
-                    System.out.println("✓ " + deleted + " notification(s) deleted.");
+                    System.out.println("[OK] " + deleted + " notification(s) deleted.");
                 }
                 input.pause();
                 yield this;
             }
             case 0 -> getBackPage();
             default -> {
-                System.out.println("Invalid option.");
+                System.out.println("[!] Invalid option.");
                 input.pause();
                 yield this;
             }

@@ -2,7 +2,6 @@ package com.junaidsultan.ui.dashboards.shared;
 
 import com.junaidsultan.entity.Ticket;
 import com.junaidsultan.enums.Priority;
-import com.junaidsultan.enums.Role;
 import com.junaidsultan.service.ITicketService;
 import com.junaidsultan.service.ServiceLocator;
 import com.junaidsultan.ui.core.input.InputReader;
@@ -28,14 +27,11 @@ public class CreateTicketPage implements Page {
     @Override
     public Page show(Screen screen, InputReader input) {
         String info = """
-            ══════════════════════════════════════
-                     CREATE NEW TICKET
-            ══════════════════════════════════════
             
             Enter '0' at any prompt to cancel.
             """;
         
-        screen.refresh("New Ticket", info, "");
+        screen.refresh("CREATE NEW TICKET", info, "");
         
         // 1. Title Input
         String title = input.readString("Title:");
@@ -58,7 +54,7 @@ public class CreateTicketPage implements Page {
             try {
                 priority = Priority.valueOf(priorityStr);
             } catch (IllegalArgumentException e) {
-                System.out.println("Invalid Priority. Please type LOW, MEDIUM, or HIGH.");
+                System.out.println("[!] Invalid Priority. Please type LOW, MEDIUM, or HIGH.");
             }
         }
         
@@ -67,10 +63,10 @@ public class CreateTicketPage implements Page {
         Ticket ticket = ticketService.createTicket(title, description, priority, category, createdBy);
         
         if (ticket != null) {
-            System.out.println("\n✓ Ticket created successfully!");
-            System.out.println("  Ticket ID: " + ticket.getId().substring(0, 8));
+            System.out.println("\n[OK] Ticket created successfully!");
+            System.out.println("     Ticket ID: " + ticket.getId().substring(0, 8));
         } else {
-            System.out.println("\n✗ Failed to create ticket. Please try again.");
+            System.out.println("\n[X] Failed to create ticket. Please try again.");
         }
         
         input.pause();

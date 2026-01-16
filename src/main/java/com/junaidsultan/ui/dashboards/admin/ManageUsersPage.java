@@ -1,7 +1,6 @@
 package com.junaidsultan.ui.dashboards.admin;
 
 import com.junaidsultan.entity.User;
-import com.junaidsultan.enums.Role;
 import com.junaidsultan.service.IUserService;
 import com.junaidsultan.service.ServiceLocator;
 import com.junaidsultan.ui.core.input.InputReader;
@@ -35,21 +34,18 @@ public class ManageUsersPage implements Page {
             ? userService.getAllStudents() 
             : userService.getAllStaff();
         
-        String title = userType == UserType.STUDENT ? "Manage Students" : "Manage Staff";
+        String title = userType == UserType.STUDENT ? "MANAGE STUDENTS" : "MANAGE STAFF";
         String userList = DisplayHelper.formatUserList(users);
         
         String content = String.format("""
-            ══════════════════════════════════════
-            %s
-            ══════════════════════════════════════
+            
             Total: %d user(s)
             
             %s
-            ══════════════════════════════════════
             
             Enter user number to manage,
             or 0 to go back.
-            """, title, users.size(), userList);
+            """, users.size(), userList);
         
         screen.refresh(title, content, "");
         int choice = input.readInt("");
@@ -63,7 +59,7 @@ public class ManageUsersPage implements Page {
             return new UserDetailsPage(selectedUser.getId(), userType);
         }
         
-        System.out.println("Invalid selection.");
+        System.out.println("[!] Invalid selection.");
         input.pause();
         return this;
     }

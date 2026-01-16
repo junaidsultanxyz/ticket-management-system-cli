@@ -76,7 +76,7 @@ public class UserDetailsPage implements Page {
         if (newEmail.isEmpty()) {
             newEmail = user.getEmail();
         } else if (!userService.isEmailAvailable(newEmail) && !newEmail.equals(user.getEmail())) {
-            System.out.println("✗ Email already in use.");
+            System.out.println("[X] Email already in use.");
             input.pause();
             return this;
         }
@@ -94,9 +94,9 @@ public class UserDetailsPage implements Page {
         User result = userService.updateUser(updatedUser);
         
         if (result != null) {
-            System.out.println("\n✓ User updated successfully.");
+            System.out.println("\n[OK] User updated successfully.");
         } else {
-            System.out.println("\n✗ Failed to update user.");
+            System.out.println("\n[X] Failed to update user.");
         }
         
         input.pause();
@@ -108,11 +108,11 @@ public class UserDetailsPage implements Page {
         
         if (confirm.equalsIgnoreCase("yes")) {
             if (userService.deleteUser(user.getId())) {
-                System.out.println("\n✓ User deleted successfully.");
+                System.out.println("\n[OK] User deleted successfully.");
                 input.pause();
                 return new ManageUsersPage(userType);
             } else {
-                System.out.println("\n✗ Failed to delete user.");
+                System.out.println("\n[X] Failed to delete user.");
             }
         } else {
             System.out.println("Deletion cancelled.");

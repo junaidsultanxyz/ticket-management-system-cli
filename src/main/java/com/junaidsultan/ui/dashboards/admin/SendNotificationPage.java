@@ -31,9 +31,6 @@ public class SendNotificationPage implements Page {
     @Override
     public Page show(Screen screen, InputReader input) {
         String menu = """
-            ══════════════════════════════════════
-                   SEND NOTIFICATION
-            ══════════════════════════════════════
             
             Send to:
             1. A Specific User
@@ -43,7 +40,7 @@ public class SendNotificationPage implements Page {
             0. Back
             """;
         
-        screen.refresh("Send Notification", menu, "");
+        screen.refresh("SEND NOTIFICATION", menu, "");
         int choice = input.readInt("");
         
         return switch (choice) {
@@ -53,7 +50,7 @@ public class SendNotificationPage implements Page {
             case 4 -> sendToAll(input);
             case 0 -> new AdminDashboardPage();
             default -> {
-                System.out.println("Invalid option.");
+                System.out.println("[!] Invalid option.");
                 input.pause();
                 yield this;
             }
@@ -130,7 +127,7 @@ public class SendNotificationPage implements Page {
         String createdBy = Session.getCurrentUser().getId();
         int sent = notificationService.sendBulkNotification(receiverIds, title, message, createdBy);
         
-        System.out.println("\n✓ Notification sent to " + sent + " user(s).");
+        System.out.println("\n[OK] Notification sent to " + sent + " user(s).");
         input.pause();
         
         return new AdminDashboardPage();

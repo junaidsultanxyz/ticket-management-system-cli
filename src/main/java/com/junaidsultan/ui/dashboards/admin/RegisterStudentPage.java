@@ -22,21 +22,18 @@ public class RegisterStudentPage implements Page {
     @Override
     public Page show(Screen screen, InputReader input) {
         String info = """
-            ══════════════════════════════════════
-                   REGISTER NEW STUDENT
-            ══════════════════════════════════════
             
             Enter '0' at any prompt to cancel.
             """;
         
-        screen.refresh("Register Student", info, "");
+        screen.refresh("REGISTER NEW STUDENT", info, "");
         
         // Get username
         String username = input.readString("Username:");
         if (username.equals("0")) return new AdminDashboardPage();
         
         if (!userService.isUsernameAvailable(username)) {
-            System.out.println("\n✗ Username already taken.");
+            System.out.println("\n[X] Username already taken.");
             input.pause();
             return this;
         }
@@ -46,7 +43,7 @@ public class RegisterStudentPage implements Page {
         if (email.equals("0")) return new AdminDashboardPage();
         
         if (!userService.isEmailAvailable(email)) {
-            System.out.println("\n✗ Email already registered.");
+            System.out.println("\n[X] Email already registered.");
             input.pause();
             return this;
         }
@@ -64,7 +61,7 @@ public class RegisterStudentPage implements Page {
         if (confirmPassword.equals("0")) return new AdminDashboardPage();
         
         if (!password.equals(confirmPassword)) {
-            System.out.println("\n✗ Passwords do not match.");
+            System.out.println("\n[X] Passwords do not match.");
             input.pause();
             return this;
         }
@@ -73,11 +70,11 @@ public class RegisterStudentPage implements Page {
         User newStudent = userService.registerStudent(username, email, name, password);
         
         if (newStudent != null) {
-            System.out.println("\n✓ Student registered successfully!");
+            System.out.println("\n[OK] Student registered successfully!");
             System.out.println("  Name: " + newStudent.getName());
             System.out.println("  Username: " + newStudent.getUsername());
         } else {
-            System.out.println("\n✗ Failed to register student.");
+            System.out.println("\n[X] Failed to register student.");
         }
         
         input.pause();

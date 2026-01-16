@@ -10,7 +10,6 @@ import com.junaidsultan.ui.dashboards.shared.NotificationsPage;
 import com.junaidsultan.ui.dashboards.shared.ViewTicketsPage;
 import com.junaidsultan.ui.scene_manager.Page;
 import com.junaidsultan.ui.scene_manager.Session;
-import com.junaidsultan.ui.shared.DisplayHelper;
 
 /**
  * Student Dashboard - Main menu for students.
@@ -29,27 +28,29 @@ public class StudentDashboardPage implements Page {
         String userId = Session.getCurrentUser().getId();
         int unreadCount = notificationService.getUnreadCount(userId);
         
-        String header = DisplayHelper.createHeader("Student Dashboard", unreadCount);
+        String notifBadge = unreadCount > 0 ? " (" + unreadCount + " new)" : "";
         
         String menu = String.format("""
-            ══════════════════════════════════════
-            Welcome, %s!
-            ══════════════════════════════════════
             
-            1. Create New Ticket
-            2. View My Open Tickets
-            3. View My Resolved Tickets
-            4. View My Closed Tickets
-            5. View Tickets On Hold
-            6. View All My Tickets
-            7. Notifications %s
-            0. Logout
+            Welcome, %s!
+            
+            TICKET MANAGEMENT:
+            [1] Create New Ticket
+            [2] View My Open Tickets
+            [3] View My Resolved Tickets
+            [4] View My Closed Tickets
+            [5] View Tickets On Hold
+            [6] View All My Tickets
+            
+            OTHER:
+            [7] Notifications%s
+            [0] Logout
             """,
             Session.getCurrentUser().getName(),
-            unreadCount > 0 ? "(" + unreadCount + " new)" : ""
+            notifBadge
         );
         
-        screen.refresh(header, menu, "Select Option");
+        screen.refresh("STUDENT DASHBOARD", menu, "Select Option");
         int choice = input.readInt("");
         
         return switch (choice) {
@@ -62,12 +63,12 @@ public class StudentDashboardPage implements Page {
             case 7 -> new NotificationsPage();
             case 0 -> {
                 Session.logout();
-                System.out.println("\n✓ Logged out successfully.");
+                System.out.println("\n[OK] Logged out successfully.");
                 input.pause();
                 yield new LoginPage();
             }
             default -> {
-                System.out.println("Invalid option. Please try again.");
+                System.out.println("[!] Invalid option. Please try again.");
                 input.pause();
                 yield this;
             }

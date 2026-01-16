@@ -21,9 +21,6 @@ public class ForgotPasswordPage implements Page {
     @Override
     public Page show(Screen screen, InputReader input) {
         String info = """
-            ══════════════════════════════════════
-                    FORGOT PASSWORD
-            ══════════════════════════════════════
             
             Note: Password reset is only available
             for student accounts.
@@ -31,7 +28,7 @@ public class ForgotPasswordPage implements Page {
             Enter '0' at any prompt to cancel.
             """;
         
-        screen.refresh("Forgot Password", info, "");
+        screen.refresh("FORGOT PASSWORD", info, "");
         
         // Get email
         String email = input.readString("Enter your registered email:");
@@ -46,14 +43,14 @@ public class ForgotPasswordPage implements Page {
         if (confirmPassword.equals("0")) return new LoginPage();
         
         if (!newPassword.equals(confirmPassword)) {
-            System.out.println("\n✗ Passwords do not match. Please try again.");
+            System.out.println("\n[X] Passwords do not match. Please try again.");
             input.pause();
             return this;
         }
         
         // Validate password strength
         if (newPassword.length() < 4) {
-            System.out.println("\n✗ Password must be at least 4 characters long.");
+            System.out.println("\n[X] Password must be at least 4 characters long.");
             input.pause();
             return this;
         }
@@ -62,13 +59,13 @@ public class ForgotPasswordPage implements Page {
         boolean success = userService.resetPassword(email, newPassword);
         
         if (success) {
-            System.out.println("\n✓ Password reset successful!");
-            System.out.println("  You can now login with your new password.");
+            System.out.println("\n[OK] Password reset successful!");
+            System.out.println("     You can now login with your new password.");
             input.pause();
             return new LoginPage();
         } else {
-            System.out.println("\n✗ Password reset failed.");
-            System.out.println("  Make sure the email belongs to a student account.");
+            System.out.println("\n[X] Password reset failed.");
+            System.out.println("    Make sure the email belongs to a student account.");
             input.pause();
             return this;
         }

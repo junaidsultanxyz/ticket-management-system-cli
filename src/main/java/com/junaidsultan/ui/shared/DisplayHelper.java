@@ -31,7 +31,7 @@ public class DisplayHelper {
      */
     public static String formatTicketCompact(Ticket ticket, int index) {
         return String.format(
-            "%d. [%s] %s - %s (%s)",
+            "  [%d] [%s] %s - %s (%s)",
             index,
             ticket.getStatus(),
             ticket.getTitle(),
@@ -45,7 +45,7 @@ public class DisplayHelper {
      */
     public static String formatTicketList(List<Ticket> tickets) {
         if (tickets.isEmpty()) {
-            return "No tickets found.";
+            return "  No tickets found.";
         }
         
         StringBuilder sb = new StringBuilder();
@@ -61,18 +61,18 @@ public class DisplayHelper {
      */
     public static String formatTicketDetails(Ticket ticket) {
         return String.format("""
-            ╔══════════════════════════════════════╗
-            ║         TICKET DETAILS               ║
-            ╠══════════════════════════════════════╣
-            ║ ID: %s
-            ║ Title: %s
-            ║ Description: %s
-            ║ Priority: %s
-            ║ Status: %s
-            ║ Category: %s
-            ║ Created By: %s
-            ║ Assigned To: %s
-            ╚══════════════════════════════════════╝
+            +--------------------------------------+
+            |         TICKET DETAILS               |
+            +--------------------------------------+
+              ID:          %s
+              Title:       %s
+              Description: %s
+              Priority:    %s
+              Status:      %s
+              Category:    %s
+              Created By:  %s
+              Assigned To: %s
+            +--------------------------------------+
             """,
             ticket.getId(),
             ticket.getTitle(),
@@ -91,7 +91,7 @@ public class DisplayHelper {
     public static String formatNotification(Notification notification, int index) {
         String readStatus = notification.isRead() ? "   " : "[*]";
         return String.format(
-            "%d. %s %s\n     %s",
+            "  [%d] %s %s\n       %s",
             index,
             readStatus,
             notification.getTitle(),
@@ -104,7 +104,7 @@ public class DisplayHelper {
      */
     public static String formatNotificationList(List<Notification> notifications) {
         if (notifications.isEmpty()) {
-            return "No notifications.";
+            return "  No notifications.";
         }
         
         StringBuilder sb = new StringBuilder();
@@ -120,7 +120,7 @@ public class DisplayHelper {
      */
     public static String formatUserCompact(User user, int index) {
         return String.format(
-            "%d. %s (%s) - %s [%s]",
+            "  [%d] %s (%s) - %s [%s]",
             index,
             user.getName(),
             user.getUsername(),
@@ -134,7 +134,7 @@ public class DisplayHelper {
      */
     public static String formatUserList(List<User> users) {
         if (users.isEmpty()) {
-            return "No users found.";
+            return "  No users found.";
         }
         
         StringBuilder sb = new StringBuilder();
@@ -150,15 +150,15 @@ public class DisplayHelper {
      */
     public static String formatUserDetails(User user) {
         return String.format("""
-            ╔══════════════════════════════════════╗
-            ║           USER DETAILS               ║
-            ╠══════════════════════════════════════╣
-            ║ ID: %s
-            ║ Username: %s
-            ║ Name: %s
-            ║ Email: %s
-            ║ Role: %s
-            ╚══════════════════════════════════════╝
+            +--------------------------------------+
+            |           USER DETAILS               |
+            +--------------------------------------+
+              ID:       %s
+              Username: %s
+              Name:     %s
+              Email:    %s
+              Role:     %s
+            +--------------------------------------+
             """,
             user.getId(),
             user.getUsername(),
@@ -173,7 +173,7 @@ public class DisplayHelper {
      */
     public static String createHeader(String title, int notificationCount) {
         String notification = notificationCount > 0 
-            ? String.format(" 🔔 %d", notificationCount) 
+            ? String.format(" [%d notifications]", notificationCount) 
             : "";
         return title + notification;
     }

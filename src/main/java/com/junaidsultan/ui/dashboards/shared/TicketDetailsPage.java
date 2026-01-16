@@ -10,9 +10,6 @@ import com.junaidsultan.service.IUserService;
 import com.junaidsultan.service.ServiceLocator;
 import com.junaidsultan.ui.core.input.InputReader;
 import com.junaidsultan.ui.core.screen.Screen;
-import com.junaidsultan.ui.dashboards.admin.AdminDashboardPage;
-import com.junaidsultan.ui.dashboards.staff.StaffDashboardPage;
-import com.junaidsultan.ui.dashboards.student.StudentDashboardPage;
 import com.junaidsultan.ui.scene_manager.Page;
 import com.junaidsultan.ui.scene_manager.Session;
 import com.junaidsultan.ui.shared.DisplayHelper;
@@ -146,12 +143,12 @@ public class TicketDetailsPage implements Page {
         try {
             Status newStatus = Status.valueOf(statusStr);
             if (ticketService.changeStatus(ticket.getId(), newStatus)) {
-                System.out.println("✓ Status updated successfully.");
+                System.out.println("[OK] Status updated successfully.");
             } else {
-                System.out.println("✗ Failed to update status.");
+                System.out.println("[X] Failed to update status.");
             }
         } catch (IllegalArgumentException e) {
-            System.out.println("✗ Invalid status.");
+            System.out.println("[X] Invalid status.");
         }
         input.pause();
     }
@@ -163,12 +160,12 @@ public class TicketDetailsPage implements Page {
         try {
             Priority newPriority = Priority.valueOf(priorityStr);
             if (ticketService.changePriority(ticket.getId(), newPriority)) {
-                System.out.println("✓ Priority updated successfully.");
+                System.out.println("[OK] Priority updated successfully.");
             } else {
-                System.out.println("✗ Failed to update priority.");
+                System.out.println("[X] Failed to update priority.");
             }
         } catch (IllegalArgumentException e) {
-            System.out.println("✗ Invalid priority.");
+            System.out.println("[X] Invalid priority.");
         }
         input.pause();
     }
@@ -192,30 +189,30 @@ public class TicketDetailsPage implements Page {
         if (staffChoice > 0 && staffChoice <= staffList.size()) {
             User selectedStaff = staffList.get(staffChoice - 1);
             if (ticketService.assignToStaff(ticket.getId(), selectedStaff.getId())) {
-                System.out.println("✓ Ticket assigned to " + selectedStaff.getName());
+                System.out.println("[OK] Ticket assigned to " + selectedStaff.getName());
             } else {
-                System.out.println("✗ Failed to assign ticket.");
+                System.out.println("[X] Failed to assign ticket.");
             }
         } else {
-            System.out.println("✗ Invalid selection.");
+            System.out.println("[X] Invalid selection.");
         }
         input.pause();
     }
     
     private void resolveTicket(Ticket ticket, InputReader input) {
         if (ticketService.resolveTicket(ticket.getId())) {
-            System.out.println("✓ Ticket resolved successfully.");
+            System.out.println("[OK] Ticket resolved successfully.");
         } else {
-            System.out.println("✗ Failed to resolve ticket.");
+            System.out.println("[X] Failed to resolve ticket.");
         }
         input.pause();
     }
     
     private void closeTicket(Ticket ticket, InputReader input) {
         if (ticketService.closeTicket(ticket.getId())) {
-            System.out.println("✓ Ticket closed successfully.");
+            System.out.println("[OK] Ticket closed successfully.");
         } else {
-            System.out.println("✗ Failed to close ticket.");
+            System.out.println("[X] Failed to close ticket.");
         }
         input.pause();
     }
@@ -225,11 +222,11 @@ public class TicketDetailsPage implements Page {
         
         if (confirm.equalsIgnoreCase("yes")) {
             if (ticketService.deleteTicket(ticket.getId())) {
-                System.out.println("✓ Ticket deleted successfully.");
+                System.out.println("[OK] Ticket deleted successfully.");
                 input.pause();
                 return true;
             } else {
-                System.out.println("✗ Failed to delete ticket.");
+                System.out.println("[X] Failed to delete ticket.");
             }
         } else {
             System.out.println("Deletion cancelled.");

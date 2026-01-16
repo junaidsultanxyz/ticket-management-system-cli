@@ -1,7 +1,6 @@
 package com.junaidsultan.ui.dashboards.auth;
 
 import com.junaidsultan.entity.User;
-import com.junaidsultan.enums.Role;
 import com.junaidsultan.service.IUserService;
 import com.junaidsultan.service.ServiceLocator;
 import com.junaidsultan.ui.core.input.InputReader;
@@ -29,17 +28,16 @@ public class LoginPage implements Page {
     @Override
     public Page show(Screen screen, InputReader input) {
         String menu = """
-            ══════════════════════════════════════
-                 TICKET MANAGEMENT SYSTEM
-            ══════════════════════════════════════
             
-            1. Login
-            2. Register (Students Only)
-            3. Forgot Password
-            0. Exit
+            Welcome to the Ticket Management System
+            
+            [1] Login
+            [2] Register (Students Only)
+            [3] Forgot Password
+            [0] Exit
             """;
         
-        screen.refresh("Welcome", menu, "Select Option");
+        screen.refresh("TICKET MANAGEMENT SYSTEM", menu, "Select Option");
         int choice = input.readInt("");
         
         switch (choice) {
@@ -56,7 +54,7 @@ public class LoginPage implements Page {
                 return null; // Exit application
             }
             default -> {
-                System.out.println("Invalid option. Please try again.");
+                System.out.println("\n[!] Invalid option. Please try again.");
                 input.pause();
                 return this;
             }
@@ -64,7 +62,7 @@ public class LoginPage implements Page {
     }
     
     private Page handleLogin(Screen screen, InputReader input) {
-        screen.refresh("Login", "Please enter your credentials.", "");
+        screen.refresh("LOGIN", "\nPlease enter your credentials:\n", "");
         
         String username = input.readString("Username:");
         String password = input.readString("Password:");
@@ -75,7 +73,7 @@ public class LoginPage implements Page {
             User user = userOpt.get();
             Session.setCurrentUser(user);
             
-            System.out.println("\n✓ Login Successful! Welcome, " + user.getName());
+            System.out.println("\n[OK] Login Successful! Welcome, " + user.getName());
             input.pause();
             
             // Route to appropriate dashboard based on role
@@ -85,7 +83,7 @@ public class LoginPage implements Page {
                 case STUDENT -> new StudentDashboardPage();
             };
         } else {
-            System.out.println("\n✗ Invalid username or password.");
+            System.out.println("\n[X] Invalid username or password.");
             input.pause();
             return this;
         }

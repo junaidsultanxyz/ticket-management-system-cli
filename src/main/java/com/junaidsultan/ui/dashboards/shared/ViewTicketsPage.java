@@ -53,19 +53,16 @@ public class ViewTicketsPage implements Page {
         String ticketList = DisplayHelper.formatTicketList(tickets);
         
         String content = String.format("""
-            ══════════════════════════════════════
-            %s
-            ══════════════════════════════════════
+            
             Total: %d ticket(s)
             
             %s
-            ══════════════════════════════════════
             
             Enter ticket number to view details,
             or 0 to go back.
-            """, title, tickets.size(), ticketList);
+            """, tickets.size(), ticketList);
         
-        screen.refresh(title, content, "");
+        screen.refresh(title.toUpperCase(), content, "");
         int choice = input.readInt("");
         
         if (choice == 0) {
@@ -77,7 +74,7 @@ public class ViewTicketsPage implements Page {
             return new TicketDetailsPage(selectedTicket.getId(), this);
         }
         
-        System.out.println("Invalid selection.");
+        System.out.println("[!] Invalid selection.");
         input.pause();
         return this;
     }
