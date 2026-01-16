@@ -53,23 +53,31 @@ public class DBConnection {
 
             String userTable = """
                 CREATE TABLE IF NOT EXISTS users (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id TEXT PRIMARY KEY,
                     username TEXT UNIQUE NOT NULL,
+                    email TEXT UNIQUE NOT NULL,
+                    name TEXT NOT NULL,
                     password_hash TEXT NOT NULL,
-                    role TEXT NOT NULL
+                    role TEXT NOT NULL CHECK(role IN ('STUDENT', 'ADMIN', 'STAFF')),
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 );
             """;
             stmt.execute(userTable);
 
             String ticketTable = """
                 CREATE TABLE IF NOT EXISTS tickets (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id TEXT PRIMARY KEY,
                     title TEXT NOT NULL,
-                    description TEXT,
-                    priority TEXT DEFAULT 'MEDIUM',
-                    status TEXT DEFAULT 'OPEN',
-                    creator_id INTEGER,
-                    FOREIGN KEY (creator_id) REFERENCES users(id)
+                    description TEXT NOT NULL,
+                    priority TEXT DEFAULT 'MEDIUM' CHECK(priority IN ('LOW', 'MEDIUM', 'HIGH')),
+                    status TEXT DEFAULT 'OPEN' CHECK(status IN ('OPEN', 'RESOLVED', 'CLOSED', 'ON_HOLD')),
+                    category TEXT,
+                    created_by TEXT NOT NULL,
+                    assigned_to TEXT,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (created_by) REFERENCES users(id),
+                    FOREIGN KEY (assigned_to) REFERENCES users(id)
                 );
             """;
             stmt.execute(ticketTable);
