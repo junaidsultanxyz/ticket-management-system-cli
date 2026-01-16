@@ -82,6 +82,21 @@ public class DBConnection {
             """;
             stmt.execute(ticketTable);
 
+            String notificationTable = """
+                CREATE TABLE IF NOT EXISTS notifications (
+                    id TEXT PRIMARY KEY,
+                    receiver_id TEXT NOT NULL,
+                    title TEXT NOT NULL,
+                    message TEXT,
+                    is_read INTEGER DEFAULT 0,
+                    created_by TEXT,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (receiver_id) REFERENCES users(id),
+                    FOREIGN KEY (created_by) REFERENCES users(id)
+                );
+            """;
+            stmt.execute(notificationTable);
+
         } catch (SQLException e) {
             System.err.println("Error creating tables: " + e.getMessage());
         }
