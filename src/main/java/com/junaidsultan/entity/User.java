@@ -1,5 +1,7 @@
 package com.junaidsultan.entity;
 
+import com.junaidsultan.enums.Role;
+
 import java.util.UUID;
 
 public class User {
@@ -9,9 +11,6 @@ public class User {
     private String name;
     private String passwordHash;
     private Role role;
-
-    // Enum for Type Safety
-    public enum Role { STUDENT, ADMIN, STAFF }
 
     public User(String username, String email, String name, String passwordHash, Role role) {
         this.id = UUID.randomUUID().toString(); // Auto-generate ID

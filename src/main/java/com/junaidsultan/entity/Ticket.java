@@ -1,5 +1,8 @@
 package com.junaidsultan.entity;
 
+import com.junaidsultan.enums.Priority;
+import com.junaidsultan.enums.Status;
+
 import java.util.UUID;
 import java.time.LocalDateTime;
 
@@ -13,9 +16,6 @@ public class Ticket {
     private String createdBy; // User ID
     private String assignedTo; // User ID
     private LocalDateTime createdAt;
-
-    public enum Priority { LOW, MEDIUM, HIGH }
-    public enum Status { OPEN, RESOLVED, CLOSED, ON_HOLD }
 
     // Constructor for creating a NEW ticket
     public Ticket(String title, String description, Priority priority, String category, String createdBy) {
